@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Paylaşımlı Takvim</title>
+    <title>Takvimce</title>
     <style>
         * {
             margin: 0;
@@ -113,22 +113,24 @@
         }
 
         .calendar {
-            border: 1px solid #e5e7eb;
-            border-radius: 8px;
+            border: 3px solid;
+            border-image: linear-gradient(135deg, #667eea 0%, #764ba2 100%) 1;
+            border-radius: 12px;
             overflow: hidden;
+            box-shadow: 0 8px 24px rgba(102, 126, 234, 0.2);
         }
 
         .weekdays {
             display: grid;
             grid-template-columns: repeat(7, 1fr);
-            background: #e5e7eb;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
         }
 
         .weekday {
             padding: 12px;
             text-align: center;
             font-weight: 600;
-            color: #374151;
+            color: white;
         }
 
         .days {
@@ -143,11 +145,12 @@
             min-height: 100px;
             padding: 8px;
             cursor: pointer;
-            transition: background 0.2s;
+            transition: all 0.2s;
         }
 
         .day:hover {
-            background: #dbeafe;
+            background: linear-gradient(135deg, #fef3c7 0%, #fde68a 100%);
+            transform: scale(1.02);
         }
 
         .day.empty {
@@ -157,22 +160,32 @@
 
         .day.empty:hover {
             background: #f9fafb;
+            transform: none;
         }
 
         .day.today {
-            background: #dbeafe;
-            border: 2px solid #3b82f6;
+            background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+            border: 2px solid #667eea;
+            box-shadow: 0 4px 12px rgba(102, 126, 234, 0.2);
         }
 
         .day-number {
             font-weight: 600;
-            color: #374151;
+            color: #1f2937;
             margin-bottom: 4px;
             font-size: 14px;
+            padding: 4px 8px;
+            background: linear-gradient(135deg, #f3f4f6 0%, #e5e7eb 100%);
+            border-radius: 6px;
+            display: inline-block;
         }
 
         .day.today .day-number {
-            color: #2563eb;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
         }
 
         .events-preview {
@@ -193,13 +206,15 @@
         }
 
         .event-user1 {
-            background: #e9d5ff;
-            color: #6b21a8;
+            background: linear-gradient(135deg, #fce7f3 0%, #fbcfe8 100%);
+            color: #be185d;
+            font-weight: 600;
         }
 
         .event-user2 {
-            background: #bbf7d0;
-            color: #166534;
+            background: linear-gradient(135deg, #dbeafe 0%, #e0e7ff 100%);
+            color: #1e40af;
+            font-weight: 600;
         }
 
         .more-events {
@@ -292,13 +307,13 @@
         }
 
         .badge-user1 {
-            background: #e9d5ff;
-            color: #6b21a8;
+            background: linear-gradient(135deg, #ec4899 0%, #f43f5e 100%);
+            color: white;
         }
 
         .badge-user2 {
-            background: #bbf7d0;
-            color: #166534;
+            background: linear-gradient(135deg, #3b82f6 0%, #8b5cf6 100%);
+            color: white;
         }
 
         .input-field {
@@ -325,18 +340,20 @@
         .add-btn {
             width: 100%;
             padding: 12px;
-            background: #3b82f6;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
             color: white;
             border: none;
             border-radius: 6px;
             font-size: 15px;
             font-weight: 600;
             cursor: pointer;
-            transition: background 0.3s;
+            transition: all 0.3s;
+            box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);
         }
 
         .add-btn:hover {
-            background: #2563eb;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(102, 126, 234, 0.4);
         }
 
         .events-list {
@@ -352,13 +369,15 @@
         }
 
         .event-card.user1 {
-            background: #faf5ff;
-            border-color: #9333ea;
+            background: linear-gradient(135deg, #fdf2f8 0%, #fce7f3 100%);
+            border-color: #ec4899;
+            box-shadow: 0 2px 8px rgba(236, 72, 153, 0.1);
         }
 
         .event-card.user2 {
-            background: #f0fdf4;
-            border-color: #16a34a;
+            background: linear-gradient(135deg, #eff6ff 0%, #dbeafe 100%);
+            border-color: #3b82f6;
+            box-shadow: 0 2px 8px rgba(59, 130, 246, 0.1);
         }
 
         .event-header {
@@ -400,32 +419,6 @@
             padding: 40px 20px;
         }
 
-        .storage-info {
-            margin-top: 20px;
-            padding: 12px;
-            background: #ecfdf5;
-            border: 1px solid #86efac;
-            border-radius: 8px;
-            text-align: center;
-            font-size: 13px;
-            color: #166534;
-        }
-
-        .loading {
-            display: inline-block;
-            width: 20px;
-            height: 20px;
-            border: 3px solid #f3f4f6;
-            border-top: 3px solid #3b82f6;
-            border-radius: 50%;
-            animation: spin 1s linear infinite;
-        }
-
-        @keyframes spin {
-            0% { transform: rotate(0deg); }
-            100% { transform: rotate(360deg); }
-        }
-
         @media (max-width: 768px) {
             .container {
                 padding: 15px;
@@ -445,10 +438,15 @@
 <body>
     <div class="container">
         <div class="header">
-            <h1>📅 Paylaşımlı Takvim</h1>
+            <div style="display: flex; align-items: center; gap: 15px;">
+                <div style="width: 50px; height: 50px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 28px; box-shadow: 0 4px 15px rgba(102, 126, 234, 0.3);">
+                    📅
+                </div>
+                <h1>Takvimce</h1>
+            </div>
             <div class="user-buttons">
-                <button class="user-btn active-user1" onclick="setUser('Kullanıcı 1')">👤 Kullanıcı 1</button>
-                <button class="user-btn inactive-user2" onclick="setUser('Kullanıcı 2')">👤 Kullanıcı 2</button>
+                <button class="user-btn active-user1" onclick="setUser('Gülce')">💃 Gülce</button>
+                <button class="user-btn inactive-user2" onclick="setUser('Atakan')">🕺 Atakan</button>
             </div>
         </div>
 
@@ -520,7 +518,7 @@
                         'Temmuz', 'Ağustos', 'Eylül', 'Ekim', 'Kasım', 'Aralık'];
         
         let currentDate = new Date();
-        let currentUser = 'Kullanıcı 1';
+        let currentUser = 'Gülce';
         let events = {};
         let selectedDate = null;
 
@@ -539,14 +537,15 @@
             localStorage.setItem('currentUser', currentUser);
             
             document.querySelectorAll('.user-btn').forEach(btn => {
-                if (user === 'Kullanıcı 1') {
-                    if (btn.textContent.includes('Kullanıcı 1')) {
+                const btnText = btn.textContent.trim();
+                if (user === 'Gülce') {
+                    if (btnText.includes('Gülce')) {
                         btn.className = 'user-btn active-user1';
                     } else {
                         btn.className = 'user-btn inactive-user2';
                     }
                 } else {
-                    if (btn.textContent.includes('Kullanıcı 2')) {
+                    if (btnText.includes('Atakan')) {
                         btn.className = 'user-btn active-user2';
                     } else {
                         btn.className = 'user-btn inactive-user1';
@@ -559,8 +558,8 @@
         function updateCurrentUserBadge() {
             const badge = document.getElementById('currentUserBadge');
             if (badge) {
-                badge.textContent = currentUser;
-                badge.className = 'user-badge ' + (currentUser === 'Kullanıcı 1' ? 'badge-user1' : 'badge-user2');
+                badge.textContent = currentUser === 'Gülce' ? '💃 Gülce' : '🕺 Atakan';
+                badge.className = 'user-badge ' + (currentUser === 'Gülce' ? 'badge-user1' : 'badge-user2');
             }
         }
 
@@ -619,7 +618,7 @@
                     <div class="day-number">${day}</div>
                     <div class="events-preview">
                         ${dayEvents.slice(0, 2).map(e => 
-                            `<div class="event-pill event-${e.user === 'Kullanıcı 1' ? 'user1' : 'user2'}">${e.title}</div>`
+                            `<div class="event-pill event-${e.user === 'Gülce' ? 'user1' : 'user2'}">${e.title}</div>`
                         ).join('')}
                         ${dayEvents.length > 2 ? `<div class="more-events">+${dayEvents.length - 2} daha</div>` : ''}
                     </div>
@@ -696,10 +695,10 @@
             }
 
             eventsList.innerHTML = dayEvents.map(event => `
-                <div class="event-card ${event.user === 'Kullanıcı 1' ? 'user1' : 'user2'}">
+                <div class="event-card ${event.user === 'Gülce' ? 'user1' : 'user2'}">
                     <div class="event-header">
-                        <div class="user-badge ${event.user === 'Kullanıcı 1' ? 'badge-user1' : 'badge-user2'}">
-                            ${event.user}
+                        <div class="user-badge ${event.user === 'Gülce' ? 'badge-user1' : 'badge-user2'}">
+                            ${event.user === 'Gülce' ? '💃 Gülce' : '🕺 Atakan'}
                         </div>
                         <button class="delete-btn" onclick="deleteEvent('${dateKey}', ${event.id})">×</button>
                     </div>
